@@ -7,40 +7,47 @@ namespace EasyCashProject.Presentation.Controllers;
 
 public class RegisterController : Controller
 {
-    private readonly UserManager<AppUser> _userManager;
+	private readonly UserManager<AppUser> _userManager;
 
-    public RegisterController(UserManager<AppUser> userManager)
-    {
-        _userManager = userManager;
-    }
+	public RegisterController(UserManager<AppUser> userManager)
+	{
+		_userManager = userManager;
+	}
 
-    [HttpGet]
-    public IActionResult Index()
-    {
-        return View();
-    }
+	[HttpGet]
+	public IActionResult Index()
+	{
+		return View();
+	}
 
-    [HttpPost]
-    public async Task<IActionResult> Index(AppUserRegisterDto appUserRegisterDto)
-    {
-        if (ModelState.IsValid)
-        {
-            AppUser appUser = new AppUser()
-            {
-                FirstName = appUserRegisterDto.FirstName,
-                LastName = appUserRegisterDto.LastName,
-                Email = appUserRegisterDto.Email,
-                UserName = appUserRegisterDto.UserName
-            };
+	[HttpPost]
+	public async Task<IActionResult> Index(AppUserRegisterDto appUserRegisterDto)
+	{
+		if (ModelState.IsValid)
+		{
+			AppUser appUser = new AppUser()
+			{
+				FirstName = appUserRegisterDto.FirstName,
+				LastName = appUserRegisterDto.LastName,
+				Email = appUserRegisterDto.Email,
+				UserName = appUserRegisterDto.UserName
+			};
 
-            var result = await _userManager.CreateAsync(appUser, appUserRegisterDto.Password);
+			var result = await _userManager.CreateAsync(appUser, appUserRegisterDto.Password);
 
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "ConfirmEmail");
-            }
-        }
+			if (result.Succeeded)
+			{
+				return RedirectToAction("Index", "ConfirmEmail");
+			}
+			else
+			{
+				foreach (var item in result.Errors)
+				{
+					ModelState.AddModelError("", item.Description);
+				}
+			}
+		}
 
-        return View();
-    }
+		return View();
+	}
 }
