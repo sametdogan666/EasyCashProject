@@ -2,7 +2,7 @@
 
 namespace EasyCashProject.Presentation.Controllers;
 
-public class MyProfileController : Controller
+public class CustomerLayoutController : Controller
 {
     // GET
     public IActionResult Index()
