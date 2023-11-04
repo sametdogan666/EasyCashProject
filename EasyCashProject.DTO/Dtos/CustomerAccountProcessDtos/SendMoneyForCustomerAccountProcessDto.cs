@@ -9,5 +9,7 @@ public class SendMoneyForCustomerAccountProcessDto
     public int SenderId { get; set; }
     public int ReceiverId { get; set; }
     public string ReceiverAccountNumber { get; set; } = null!;
+    public string? Description { get; set; }
+
 
 }
